@@ -25,18 +25,18 @@ public class LocalDataCacher
 
         using (XmlWriter writer = XmlWriter.Create(StoragePath + "\\Postal.xml"))
         {
-            writer.WriteStartElement("Emails");
-            foreach (var PostalCode in MailList)
-            {
+            //writer.WriteStartElement("Emails");
+            //foreach (var PostalCode in MailList)
+            //{
 
-                writer.WriteStartElement("Postal");
-                writer.WriteElementString("Id", Convert.ToString(PostalCode.Id));
-                writer.WriteElementString("Code", Convert.ToString(PostalCode.Code));
-                writer.WriteElementString("CityName", PostalCode.CityName);
-                writer.WriteEndElement();
-            }
-            writer.WriteEndElement();
-            writer.Flush();
+            //    writer.WriteStartElement("Postal");
+            //    writer.WriteElementString("Id", Convert.ToString(PostalCode.Id));
+            //    writer.WriteElementString("Code", Convert.ToString(PostalCode.Code));
+            //    writer.WriteElementString("CityName", PostalCode.CityName);
+            //    writer.WriteEndElement();
+            //}
+            //writer.WriteEndElement();
+            //writer.Flush();
         }
         Console.WriteLine("Created Mail.xml Successfully");
 
