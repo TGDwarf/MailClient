@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using OpenPop.Pop3;
 using OpenPop.Mime;
 
@@ -13,11 +16,11 @@ namespace MailClient
         /// <summary>
         ///  Method to pull all messages from the mailserver
         /// </summary>
-        /// <param name="hostname">Hostname: pop.gmail.com</param>
-        /// <param name="port">SSL port: 995</param>
-        /// <param name="useSsl">use SSL: true</param>
-        /// <param name="username">Email / Username: tgdxof@gmail.com</param>
-        /// <param name="password">Password: MailClient</param>
+        /// <param name="hostname"> Hostname gmail: pop.gmail.com / Hostname outlook: pop3.live.com </param>
+        /// <param name="port"> SSL port: 995 </param>
+        /// <param name="useSsl"> use SSL: true </param>
+        /// <param name="username"> Email / Username: tgdxof@gmail.com / tgdxof@live.com </param>
+        /// <param name="password"> Password: MailClient </param>
         /// <returns></returns>
         public static List<Message> getAllMessages(string hostname, int port, bool useSsl, string username, string password)
         {
@@ -59,6 +62,52 @@ namespace MailClient
                     }
 
                     return allMessages;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// "smtp.gmail.com", 587, true,
+        /// </summary>
+        /// <param name="Hostname"> Hostname gmail: pop.gmail.com / Hostname outlook: pop3.live.com </param>
+        /// <param name="SslPort"> TLS port: 587 </param>
+        /// <param name="UseSsl"> use SSL: true </param>
+        /// <param name="SendTo"> Email address receiver </param>
+        /// <param name="subject"> Email subject </param>
+        /// <param name="EmailContent"> main email content / Body </param>
+        /// <param name="username1"> Username for sender </param>
+        /// <param name="password1"> Password for sender.</param>
+        public static void sendMail(string Hostname, int Port, bool UseSsl, string SendTo, string subject, string EmailContent, string username1, string password1)
+        {
+            if (string.IsNullOrWhiteSpace(Hostname))
+            {
+                throw new ArgumentException("Hostname cannot be empty, null or only contain whitespaces");
+            }
+            else if (Port != 587)
+            {
+                throw new IndexOutOfRangeException("SSL/TLS port has to be 587! port is: " + Port);
+            }
+            else if (UseSsl == false)
+            {
+                throw new ArgumentException("UseSsl must be set true, else it won't connect.");
+            }
+            else if (!Regex.IsMatch(SendTo,
+                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            {
+                throw new FormatException("Not a valid email");
+            }
+            else
+            {
+                var message = new MailMessage(username1, SendTo);
+                message.Subject = subject;
+                message.Body = EmailContent;
+                using (SmtpClient sender = new SmtpClient(Hostname, Port))
+                {
+                    sender.Credentials = new NetworkCredential(username1, password1);
+                    sender.EnableSsl = UseSsl;
+                    sender.Send(message);
                 }
             }
         }
