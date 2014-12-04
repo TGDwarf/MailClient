@@ -23,39 +23,44 @@ namespace MailClient
         {
             if (string.IsNullOrWhiteSpace(hostname))
             {
-                throw new FormatException("Hostname cannot be empty, null or only contain whitespaces");
+                throw new ArgumentException("Hostname cannot be empty, null or only contain whitespaces");
             }
             else if (port != 995)
             {
                 throw new IndexOutOfRangeException("SSL port has to be 995 port is: " + port);
             }
-            //Using "using" for auto disposal og object when finished.
-            using (Pop3Client client = new Pop3Client())
+            else if (useSsl == false)
             {
-                //Connecting to client
-                client.Connect(hostname, port, useSsl);
-
-                //Authenticating user / login
-                client.Authenticate(username, password);
-
-                //count the number of mail on the server.
-                int messageCount = client.GetMessageCount();
-
-                //get mails to client from server
-                List<Message> allMessages = new List<Message>(messageCount);
-
-                // Messages are numbered in the interval: [1, messageCount]
-                // Ergo: message numbers are 1-based.
-                // Most servers give the latest message the highest number
-                for (int i = messageCount; i > 0; i--)
-                {
-                    allMessages.Add(client.GetMessage(i));
-                }
-
-                return allMessages;
+                throw new ArgumentException("UseSsl must be set true, else it won't connect.");
             }
-            
-        }
+            else
+            {
+                //Using "using" for auto disposal og object when finished.
+                using (Pop3Client client = new Pop3Client())
+                {
+                    //Connecting to client
+                    client.Connect(hostname, port, useSsl);
 
+                    //Authenticating user / login
+                    client.Authenticate(username, password);
+
+                    //count the number of mail on the server.
+                    int messageCount = client.GetMessageCount();
+
+                    //get mails to client from server
+                    List<Message> allMessages = new List<Message>(messageCount);
+
+                    // Messages are numbered in the interval: [1, messageCount]
+                    // Ergo: message numbers are 1-based.
+                    // Most servers give the latest message the highest number
+                    for (int i = messageCount; i > 0; i--)
+                    {
+                        allMessages.Add(client.GetMessage(i));
+                    }
+
+                    return allMessages;
+                }
+            }
+        }
     }
 }
