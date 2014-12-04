@@ -37,7 +37,7 @@ namespace TestMailClient
         [ExpectedException(typeof(ArgumentException))]
         public void TestRetrieveEmailsWithDisabledSsl()
         {
-            //testing SslPort, if not 995, throw exception.
+            //testing UseSsl, if not true, throw exception.
             List<OpenPop.Mime.Message> EmailList = OpenPopParser.getAllMessages("pop.gmail.com", 995, false, "tgdxof@gmail.com", "MailClient");
 
         }
