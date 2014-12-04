@@ -47,4 +47,18 @@ namespace TestMailClient
 
 
     }
+    [TestClass]
+    public class TestEmailSend
+    {
+        string username1 = "tgdxof@gmail.com";
+        string password1 = "MailClient";
+        string subject = "*Subject* this is a test";
+        string EmailContent = "Email content, something, something, something, something, something\nsomething, something, something";
+
+        [TestMethod]
+        public void TestSendEmail()
+        {
+            OpenPopParser.sendMail("smtp.gmail.com", 587, true, "sniffern@msn.com", subject, EmailContent, username1, password1);
+        }
+    }
 }
