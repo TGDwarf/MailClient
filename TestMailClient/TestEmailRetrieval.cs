@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestMailClient
 {
     [TestClass]
-    public class UnitTest1
+    public class TestEmailRetrieval
     {
         [TestMethod]
         public void TestRetrieveEmails()
