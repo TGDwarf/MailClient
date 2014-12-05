@@ -11,6 +11,28 @@ using OpenPop.Mime;
 
 namespace MailClient
 {
+    [Serializable]
+    public class Email
+    {
+        public Email()
+        {
+            this.Attachments = new List<Attachment>();
+        }
+        public int MessageNumber { get; set; }
+        public string From { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+        public DateTime DateSent { get; set; }
+        public List<Attachment> Attachments { get; set; }
+    }
+
+    [Serializable]
+    public class Attachment
+    {
+        public string FileName { get; set; }
+        public string ContentType { get; set; }
+        public byte[] Content { get; set; }
+    }
     public partial class OpenPopParser
     {
         /// <summary>
@@ -44,9 +66,10 @@ namespace MailClient
                     //Connecting to client
                     client.Connect(hostname, port, useSsl);
 
-                    //Authenticating user / login
-                    client.Authenticate(username, password);
-
+                    //Authenticating user / login(using 'recent:' due to Gmail is syncing sesson vice. if it is not present, it will only read
+                    //the mails the first time, and will not find them afterwards)
+                    client.Authenticate("recent:" + username, password);
+                    
                     //count the number of mail on the server.
                     int messageCount = client.GetMessageCount();
 
@@ -59,8 +82,9 @@ namespace MailClient
                     for (int i = messageCount; i > 0; i--)
                     {
                         allMessages.Add(client.GetMessage(i));
-                    }
 
+                    }
+                    
                     return allMessages;
                 }
             }
