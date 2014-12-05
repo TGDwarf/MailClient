@@ -1,0 +1,29 @@
+﻿<Window x:Class="MailClient.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Content, ElementName=lblName}" Height="225" Width="275" WindowStartupLocation="CenterScreen">
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="grid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Program Name" x:Name="lblName" VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" FlowDirection="LeftToRight" FontSize="16" Grid.ColumnSpan="2" />
+            <Label Content="Email Provider :" HorizontalAlignment="Center" x:Name="lblEmailProvider" VerticalAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" HorizontalContentAlignment="Center" Grid.Row="1" />
+            <ComboBox x:Name="cbEmailProvider" Grid.Column="1" Grid.Row="1" Width="120" VerticalAlignment="Center" SelectionChanged="cbEmailProvider_SelectionChanged"/>
+            <Label Content="Email :" HorizontalAlignment="Center" x:Name="lblUsername" VerticalAlignment="Center" VerticalContentAlignment="Center" IsEnabled="True" HorizontalContentAlignment="Center" Grid.Row="2" />
+            <TextBox HorizontalAlignment="Center" x:Name="tbUsername" Text="TGD" VerticalAlignment="Center" Width="120" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ToolTip="Enter your Username" Height="23" Grid.Row="2" Grid.Column="1" />
+            <Label Content="Password :" HorizontalAlignment="Center" x:Name="lblPassword" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="3" />
+            <PasswordBox HorizontalAlignment="Center" x:Name="pwbPassword" VerticalAlignment="Center" Width="120" Height="23" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Password="morfling" Grid.ColumnSpan="1" Grid.Row="3" Grid.Column="1" />
+            <Button x:Name="btnLogin" IsDefault="True" Content="Login" Width="65" Height="22" Grid.Row="4" Click="btnLogin_Click"/>
+            <Button x:Name="btnClose" IsCancel="False" Content="Close" Width="65" Grid.Column="1" Grid.Row="4" Height="22" Click="btnClose_Click"/>
+        </Grid>
+    </Grid>
+</Window>

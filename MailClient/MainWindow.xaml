@@ -42,12 +42,12 @@
             <ComboBox x:Name="cbRoleSelector" Text="Mail" Margin="10" Grid.Row="1" Width="120" Height="22" IsEditable="True" IsReadOnly="True" />
 
             <StackPanel x:Name="spFunctionButtons" Grid.Column="1" Margin="10" Grid.RowSpan="1" Orientation="Horizontal" Grid.Row="1">
-                <Button x:Name="btnCompose" Content="Compose" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
                 <Button x:Name="btnSelect" Content="Select" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
                 <Button x:Name="btnRefresh" Content="Refresh" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
                 <Button x:Name="btnFunction" Content="Function" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
             </StackPanel>
             <StackPanel Margin="10,10,10,0" Grid.Row="2">
+                <Label Content="Compose" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <ComboBox x:Name="btnInbox" Text="Inbox" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" IsReadOnly="True" />
                 <Label Content="Outbox" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <Label Content="Starred" HorizontalAlignment="Left" VerticalAlignment="Top" />

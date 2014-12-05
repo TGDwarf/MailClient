@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MailClient
 {
@@ -20,12 +9,24 @@ namespace MailClient
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public static string programName = "MailClient";
+
+        public static double programVersion = 0.2;
+
         public MainWindow()
         {
             InitializeComponent();
 
             Mailview_Datagrid_AddColumns();
             Mailview_DataGrid_AddItems();
+        }
+ 
+
+        private void GetAllMail()
+        {
+
+            //OpenPopParser.getAllMessages()
         }
 
         private void Mailview_DataGrid_AddItems()
@@ -35,23 +36,40 @@ namespace MailClient
 
         private void Mailview_Datagrid_AddColumns()
         {
-            DataGridTextColumn checkboxColumn = new DataGridTextColumn();
+            DataGridCheckBoxColumn checkboxColumn = new DataGridCheckBoxColumn();
             checkboxColumn.Header = "Checkbox";
             checkboxColumn.Binding = new Binding("Checkbox");
             checkboxColumn.Width = 25;
             Mailview_DataGrid.Columns.Add(checkboxColumn);
 
-            DataGridTextColumn starColumn = new DataGridTextColumn();
-            starColumn.Header = "Star";
-            starColumn.Binding = new Binding("Star");
-            starColumn.Width = 25;
-            Mailview_DataGrid.Columns.Add(starColumn);
+            //DataGridTextColumn starColumn = new DataGridTextColumn();
+            //starColumn.Header = "Star";
+            //starColumn.Binding = new Binding("Star");
+            //starColumn.Width = 25;
+            //Mailview_DataGrid.Columns.Add(starColumn);
 
-            DataGridTextColumn etiketColumn = new DataGridTextColumn();
-            etiketColumn.Header = "Etiket";
-            etiketColumn.Binding = new Binding("Etiket");
-            etiketColumn.Width = 25;
-            Mailview_DataGrid.Columns.Add(etiketColumn);
+            //DataGridTextColumn etiketColumn = new DataGridTextColumn();
+            //etiketColumn.Header = "Etiket";
+            //etiketColumn.Width = 25;
+
+            //Style style = new Style();
+            //style.TargetType = typeof(DataGridCell);
+
+            //DataTrigger DT = new DataTrigger();
+            //Binding DataTriggerBinding = new Binding("Etiket");
+            //DataTriggerBinding.Mode = BindingMode.Default;
+            //DataTriggerBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            //DT.Binding = DataTriggerBinding;
+            //DT.Value = null;
+            //Setter DataTriggerSetter = new Setter();
+            //DataTriggerSetter.Property = DataGridCell.BackgroundProperty;
+            //DataTriggerSetter.Value = Brushes.LightGreen;
+            //DT.Setters.Add(DataTriggerSetter);
+            //style.Triggers.Add(DT);
+
+            //etiketColumn.CellStyle = style; 
+
+            //Mailview_DataGrid.Columns.Add(etiketColumn);
 
             DataGridTextColumn senderColumn = new DataGridTextColumn();
             senderColumn.Header = "Sender";
