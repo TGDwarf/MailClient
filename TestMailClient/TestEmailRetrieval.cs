@@ -14,8 +14,33 @@ namespace TestMailClient
         [TestMethod]
         public void TestRetrieveEmails()
         {
+            
             //This test is to verify that retrieving the Email list actually works
-            List<OpenPop.Mime.Message> EmailList = OpenPopParser.getAllMessages("pop.gmail.com", 995, true, username1, password1);
+            List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
+            allMessages = OpenPopParser.getAllMessages("pop.gmail.com", 995, true, username1, password1);
+            foreach (var message in allMessages)
+            {
+                if (message.Headers.From.ToString() == username1)
+                {
+                    string from = message.Headers.From.ToString();
+                    string subject = message.Headers.Subject.ToString();
+                    OpenPop.Mime.MessagePart body = message.FindFirstHtmlVersion();
+                    if (body != null)
+                    {
+                        string Body = body.GetBodyAsText();
+                    }
+                    else
+                    {
+                        body = message.FindFirstPlainTextVersion();
+                        if (body != null)
+                        {
+                            string Body = body.GetBodyAsText();
+                        }
+                    }
+                }
+            }
+            
+            
 
         }
         [TestMethod]
