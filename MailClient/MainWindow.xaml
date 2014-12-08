@@ -2,11 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:MailClient"
-        Title="MailClient" Height="768" Width="1024" WindowState="Maximized" WindowStartupLocation="CenterScreen">
+        Title="MailClient" Height="768" Width="1024" WindowState="Maximized" WindowStartupLocation="Manual">
     <Window.Resources>
-        <!--<Style x:Key="CheckboxStyle" TargetType="{x:Type CheckBox}">
-            <Setter Property="IsChecked" Value="{Binding MessagePart.IsAttachment, Mode=OneWay}" />
-        </Style>-->
         <local:IntToImageConverter x:Key="IntToImageConverter" />
     </Window.Resources>
     <Grid>
@@ -61,15 +58,11 @@
                 <Label x:Name="lblSpam" Content="Spam" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblSpam_MouseLeftButtonUp" />
                 <Label x:Name="lblTrash" Content="Trash" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblTrash_MouseLeftButtonUp" />
             </StackPanel>
-            <DataGrid x:Name="Mailview_DataGrid" AutoGenerateColumns="False" Grid.Column="1" IsReadOnly="False" Margin="10,10,0,0" Grid.Row="2" ItemsSource="{Binding}" >
+            <DataGrid x:Name="Mailview_DataGrid" AutoGenerateColumns="False" Grid.Column="1" IsReadOnly="False" Margin="10,10,0,0" Grid.Row="2" ItemsSource="{Binding}" Visibility="Hidden" >
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Marked"/>
                     <DataGridTextColumn Binding="{Binding Path=Headers.From}" Header="From"/>
                     <DataGridTextColumn Binding="{Binding Path=Headers.Subject}" Header="Subject"/>
-                    <!--<DataGridCheckBoxColumn  Header="Attachment" Binding="{Binding HasAttachment}">
-                    </DataGridCheckBoxColumn>
-                    -->
-                    <!--<DataGridCheckBoxColumn ElementStyle="{StaticResource CheckboxStyle}" Header="Attachment" IsReadOnly="True" />-->
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
