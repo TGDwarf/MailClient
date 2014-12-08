@@ -135,5 +135,41 @@ namespace MailClient
                 }
             }
         }
+        
+        /// <summary>
+        /// method to return the body of the emails
+        /// </summary>
+        /// <param name="MessageIndex"> Integer to define which body to fetch </param>
+        /// <param name="InboxOrSent"> List - sent or inbox </param>
+        /// <returns>Email body, in plain text </returns>
+        public static string Body(int MessageIndex, List<Message> InboxOrSent)
+        {
+            string body = "";
+            if (InboxOrSent.Count < MessageIndex)
+            {
+                throw new IndexOutOfRangeException("the number is too big for the list.");
+            }
+            else if (InboxOrSent.Count > MessageIndex)
+            {
+                
+                Message getBodyFromMessage = InboxOrSent[MessageIndex];
+
+                OpenPop.Mime.MessagePart bodyPart = getBodyFromMessage.FindFirstHtmlVersion();
+                if (bodyPart != null)
+                {
+                    body = bodyPart.GetBodyAsText();
+                }
+                else
+                {
+                    bodyPart = getBodyFromMessage.FindFirstPlainTextVersion();
+                    if (bodyPart != null)
+                    {
+                        body = bodyPart.GetBodyAsText();
+                    }
+                }
+            }
+            
+            return body;
+        }
     }
 }
