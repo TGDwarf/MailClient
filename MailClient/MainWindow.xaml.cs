@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using OpenPop.Mime;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -14,24 +16,41 @@ namespace MailClient
 
         public static double programVersion = 0.2;
 
+        public List<Message> messages = new List<Message>();
+
         public MainWindow()
         {
             InitializeComponent();
 
             Mailview_Datagrid_AddColumns();
+
+            GetAllMail();
+
             Mailview_DataGrid_AddItems();
         }
- 
 
         private void GetAllMail()
         {
-
-            //OpenPopParser.getAllMessages()
+            messages = OpenPopParser.getAllMessages(LoginWindow.UserEmailProvider, 995, true, LoginWindow.UserEmail, LoginWindow.UserPassword);
         }
 
         private void Mailview_DataGrid_AddItems()
         {
-            Mailview_DataGrid.Items.Add("Test");
+            foreach (Message item in messages)
+            {
+                Mailview_DataGrid.Items.Add(item);
+                item.Headers.From.ToString(); //senders
+                item.Headers.Subject.ToString(); // subject
+                item.Headers.DateSent.ToString(); // tid afstendt
+                List<MessagePart> atttachment = item.FindAllAttachments();
+                foreach (MessagePart att in atttachment)
+                {
+                    string filename = att.FileName;
+                    string contentType = att.ContentType.MediaType;
+                    byte[] content = att.Body;
+                }
+            }
+
         }
 
         private void Mailview_Datagrid_AddColumns()
