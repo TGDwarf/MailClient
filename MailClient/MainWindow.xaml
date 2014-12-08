@@ -1,7 +1,14 @@
 ﻿<Window x:Class="MailClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MailClient"
         Title="MailClient" Height="768" Width="1024" WindowState="Maximized" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <!--<Style x:Key="CheckboxStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="IsChecked" Value="{Binding MessagePart.IsAttachment, Mode=OneWay}" />
+        </Style>-->
+        <local:IntToImageConverter x:Key="IntToImageConverter" />
+    </Window.Resources>
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -47,16 +54,42 @@
                 <Button x:Name="btnFunction" Content="Function" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
             </StackPanel>
             <StackPanel Margin="10,10,10,0" Grid.Row="2">
-                <Label Content="Compose" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                <ComboBox x:Name="btnInbox" Text="Inbox" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="120" IsEditable="True" IsReadOnly="True" />
-                <Label Content="Outbox" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                <Label Content="Starred" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                <Label Content="Sent Mail" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                <Label Content="Drafts" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                <Label Content="Spam" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                <Label Content="Trash" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <Label x:Name="lblCompose" Content="Compose" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblCompose_MouseLeftButtonUp" />
+                <Label x:Name="lblInbox" Content="Inbox" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblInbox_MouseLeftButtonUp" />
+                <Label x:Name="lblSentMail" Content="Sent Mail" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblSentMail_MouseLeftButtonUp" />
+                <Label x:Name="lblDrafts" Content="Drafts" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblDrafts_MouseLeftButtonUp" />
+                <Label x:Name="lblSpam" Content="Spam" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblSpam_MouseLeftButtonUp" />
+                <Label x:Name="lblTrash" Content="Trash" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblTrash_MouseLeftButtonUp" />
             </StackPanel>
-            <DataGrid x:Name="Mailview_DataGrid" AutoGenerateColumns="False" Grid.Column="1" IsReadOnly="False" Margin="10,10,0,0" Grid.Row="2"/>
+            <DataGrid x:Name="Mailview_DataGrid" AutoGenerateColumns="False" Grid.Column="1" IsReadOnly="False" Margin="10,10,0,0" Grid.Row="2" ItemsSource="{Binding}" >
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="Marked"/>
+                    <DataGridTextColumn Binding="{Binding Path=Headers.From}" Header="From"/>
+                    <DataGridTextColumn Binding="{Binding Path=Headers.Subject}" Header="Subject"/>
+                    <!--<DataGridCheckBoxColumn  Header="Attachment" Binding="{Binding HasAttachment}">
+                    </DataGridCheckBoxColumn>
+                    -->
+                    <!--<DataGridCheckBoxColumn ElementStyle="{StaticResource CheckboxStyle}" Header="Attachment" IsReadOnly="True" />-->
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Converter={StaticResource IntToImageConverter}}" 
+                                           RenderOptions.BitmapScalingMode="Fant"
+                                           Stretch="Fill"
+                                           Width="16"
+                                           Height="16"
+                                           VerticalAlignment="Top"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Path=Headers.DateSent}" Header="DateSent"/>
+                </DataGrid.Columns>
+                
+            </DataGrid>
         </Grid>
 
     </Grid>

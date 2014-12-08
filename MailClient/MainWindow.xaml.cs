@@ -1,8 +1,11 @@
 ﻿using OpenPop.Mime;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MailClient
 {
@@ -16,103 +19,180 @@ namespace MailClient
 
         public static double programVersion = 0.2;
 
-        public List<Message> messages = new List<Message>();
+        public List<Message> allEmails = new List<Message>();
+
+        public List<Message> allIncomingEmails = new List<Message>();
+
+        public List<Message> allOutGoingEmails = new List<Message>();
+
+        public List<Message> Drafts = new List<Message>();
+
+        public List<Message> Spam = new List<Message>();
+
+        public List<Message> Trash = new List<Message>();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Mailview_Datagrid_AddColumns();
-
             GetAllMail();
 
-            Mailview_DataGrid_AddItems();
+            Mailview_DataGrid.ItemsSource = allIncomingEmails;
         }
 
         private void GetAllMail()
         {
-            messages = OpenPopParser.getAllMessages(LoginWindow.UserEmailProvider, 995, true, LoginWindow.UserEmail, LoginWindow.UserPassword);
-        }
-
-        private void Mailview_DataGrid_AddItems()
-        {
-            foreach (Message item in messages)
+            allEmails = OpenPopParser.getAllMessages(LoginWindow.UserEmailProvider, 995, true, LoginWindow.UserEmail, LoginWindow.UserPassword);
+            foreach (Message item in allEmails)
             {
-                Mailview_DataGrid.Items.Add(item);
-                item.Headers.From.ToString(); //senders
-                item.Headers.Subject.ToString(); // subject
-                item.Headers.DateSent.ToString(); // tid afstendt
-                List<MessagePart> atttachment = item.FindAllAttachments();
-                foreach (MessagePart att in atttachment)
+                if (item.Headers.From.ToString() != LoginWindow.UserEmail)
                 {
-                    string filename = att.FileName;
-                    string contentType = att.ContentType.MediaType;
-                    byte[] content = att.Body;
+                    allIncomingEmails.Add(item);
+                }
+                else
+                {
+                    allOutGoingEmails.Add(item);
                 }
             }
 
         }
 
-        private void Mailview_Datagrid_AddColumns()
+        private void lblCompose_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            DataGridCheckBoxColumn checkboxColumn = new DataGridCheckBoxColumn();
-            checkboxColumn.Header = "Checkbox";
-            checkboxColumn.Binding = new Binding("Checkbox");
-            checkboxColumn.Width = 25;
-            Mailview_DataGrid.Columns.Add(checkboxColumn);
 
-            //DataGridTextColumn starColumn = new DataGridTextColumn();
-            //starColumn.Header = "Star";
-            //starColumn.Binding = new Binding("Star");
-            //starColumn.Width = 25;
-            //Mailview_DataGrid.Columns.Add(starColumn);
+        }
 
-            //DataGridTextColumn etiketColumn = new DataGridTextColumn();
-            //etiketColumn.Header = "Etiket";
-            //etiketColumn.Width = 25;
+        private void lblInbox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Mailview_DataGrid.ItemsSource = allIncomingEmails;
+        }
 
-            //Style style = new Style();
-            //style.TargetType = typeof(DataGridCell);
+        private void lblSentMail_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Mailview_DataGrid.ItemsSource = allOutGoingEmails;
+        }
 
-            //DataTrigger DT = new DataTrigger();
-            //Binding DataTriggerBinding = new Binding("Etiket");
-            //DataTriggerBinding.Mode = BindingMode.Default;
-            //DataTriggerBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-            //DT.Binding = DataTriggerBinding;
-            //DT.Value = null;
-            //Setter DataTriggerSetter = new Setter();
-            //DataTriggerSetter.Property = DataGridCell.BackgroundProperty;
-            //DataTriggerSetter.Value = Brushes.LightGreen;
-            //DT.Setters.Add(DataTriggerSetter);
-            //style.Triggers.Add(DT);
+        private void lblDrafts_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Mailview_DataGrid.ItemsSource = Drafts;
+        }
 
-            //etiketColumn.CellStyle = style; 
+        private void lblSpam_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Mailview_DataGrid.ItemsSource = Spam;
+        }
 
-            //Mailview_DataGrid.Columns.Add(etiketColumn);
+        private void lblTrash_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Mailview_DataGrid.ItemsSource = Trash;
+        }
 
-            DataGridTextColumn senderColumn = new DataGridTextColumn();
-            senderColumn.Header = "Sender";
-            senderColumn.Binding = new Binding("Sender");
-            senderColumn.Width = 100;
-            Mailview_DataGrid.Columns.Add(senderColumn);
+        //private void Mailview_DataGrid_AddItems()
+        //{
+        //    foreach (Message item in messages)
+        //    {
+        //        if (item.Headers.From.ToString() != LoginWindow.UserEmail)
+        //        {
+        //            Mailview_DataGrid.Items.Add(item) {Mailview_DataGrid   = item.Headers.From.ToString() };
+        //            Mailview_DataGrid.Items.Add(item);
+        //            item.Headers.From.ToString(); //senders
+        //            item.Headers.Subject.ToString(); // subject
+        //            item.Headers.DateSent.ToString(); // tid afstendt
+        //            List<MessagePart> atttachment = item.FindAllAttachments();
+        //            foreach (MessagePart att in atttachment)
+        //            {
+        //                string filename = att.FileName;
+        //                string contentType = att.ContentType.MediaType;
+        //                byte[] content = att.Body;
+        //            }
+        //        }
+        //    }
 
-            DataGridTextColumn subjectColumn = new DataGridTextColumn();
-            subjectColumn.Header = "Subject";
-            subjectColumn.Binding = new Binding("Subject");
-            subjectColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
-            Mailview_DataGrid.Columns.Add(subjectColumn);
+        //}
 
-            DataGridTextColumn attachmentColumn = new DataGridTextColumn();
-            attachmentColumn.Header = "Attachment";
-            attachmentColumn.Binding = new Binding("Attachment");
-            attachmentColumn.Width = 25;
-            Mailview_DataGrid.Columns.Add(attachmentColumn);
+        //private void Mailview_Datagrid_AddColumns()
+        //{
+        //    DataGridCheckBoxColumn checkboxColumn = new DataGridCheckBoxColumn();
+        //    checkboxColumn.Header = "Checkbox";
+        //    checkboxColumn.Binding = new Binding("Checkbox");
+        //    checkboxColumn.Width = 25;
+        //    Mailview_DataGrid.Columns.Add(checkboxColumn);
 
-            DataGridTextColumn timeColumn = new DataGridTextColumn();
-            timeColumn.Header = "Time";
-            timeColumn.Binding = new Binding("Time");
-            timeColumn.Width = 75;
-            Mailview_DataGrid.Columns.Add(timeColumn);
+        //    DataGridTextColumn starColumn = new DataGridTextColumn();
+        //    starColumn.Header = "Star";
+        //    starColumn.Binding = new Binding("Star");
+        //    starColumn.Width = 25;
+        //    Mailview_DataGrid.Columns.Add(starColumn);
+
+        //    DataGridTextColumn etiketColumn = new DataGridTextColumn();
+        //    etiketColumn.Header = "Etiket";
+        //    etiketColumn.Width = 25;
+
+        //    Style style = new Style();
+        //    style.TargetType = typeof(DataGridCell);
+
+        //    DataTrigger DT = new DataTrigger();
+        //    Binding DataTriggerBinding = new Binding("Etiket");
+        //    DataTriggerBinding.Mode = BindingMode.Default;
+        //    DataTriggerBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+        //    DT.Binding = DataTriggerBinding;
+        //    DT.Value = null;
+        //    Setter DataTriggerSetter = new Setter();
+        //    DataTriggerSetter.Property = DataGridCell.BackgroundProperty;
+        //    DataTriggerSetter.Value = Brushes.LightGreen;
+        //    DT.Setters.Add(DataTriggerSetter);
+        //    style.Triggers.Add(DT);
+
+        //    etiketColumn.CellStyle = style;
+
+        //    Mailview_DataGrid.Columns.Add(etiketColumn);
+
+        //    DataGridTextColumn senderColumn = new DataGridTextColumn();
+        //    senderColumn.Header = "From";
+        //    senderColumn.Binding = new Binding(Email.From);
+        //    senderColumn.Width = 100;
+        //    Mailview_DataGrid.Columns.Add(senderColumn);
+
+        //    DataGridTextColumn subjectColumn = new DataGridTextColumn();
+        //    subjectColumn.Header = "Subject";
+        //    subjectColumn.Binding = new Binding(Email.Subject);
+        //    subjectColumn.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+        //    Mailview_DataGrid.Columns.Add(subjectColumn);
+
+        //    DataGridCheckBoxColumn attachmentColumn = new DataGridCheckBoxColumn();
+        //    attachmentColumn.Header = "Attachment";
+        //    attachmentColumn.Binding = new Binding(CheckForAttachment);
+        //    attachmentColumn.Width = 25;
+        //    Mailview_DataGrid.Columns.Add(attachmentColumn);
+
+        //    DataGridTextColumn timeColumn = new DataGridTextColumn();
+        //    timeColumn.Header = "Time";
+        //    timeColumn.Binding = new Binding(".");
+        //    timeColumn.Width = 75;
+        //    Mailview_DataGrid.Columns.Add(timeColumn);
+        //}
+
+    }
+
+    public class IntToImageConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            ImageSource result = null;
+            Message msg = (Message)value;
+            //var boolValue = msg.MessagePart.IsAttachment;
+
+            if (msg.FindAllAttachments().Count > 0)
+            {
+                result = new BitmapImage(new Uri(@"D:\Google Drive\Projects\Programming\MailClient\MailClient\MailClient\Images\PaperClip.png"));
+            }
+            return result;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
