@@ -1,18 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MailClient
 {
@@ -21,6 +9,12 @@ namespace MailClient
     /// </summary>
     public partial class LoginWindow : Window
     {
+
+        public static string UserEmail;
+
+        public static string UserPassword;
+
+        public static string UserEmailProvider;
 
         public static List<Tuple<string, string>> listofhostprovidertuples = new List<Tuple<String, String>>();
 
@@ -51,8 +45,10 @@ namespace MailClient
         {
             for (int i = 0; i < listofhostprovidertuples.Count; i++)
             {
-                cbEmailProvider.Items.Add(listofhostprovidertuples[i].Item1);
+                cbEmailProvider.Items.Add(listofhostprovidertuples[i]);
             }
+
+            cbEmailProvider.SelectedIndex = 0;
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -62,11 +58,24 @@ namespace MailClient
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
+            UserEmail = tbUserEmail.Text;
 
-        }
+            UserPassword = pbUserPassword.Password;
 
-        private void cbEmailProvider_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            UserEmailProvider = cbEmailProvider.SelectedValue.ToString();
+
+            if (tbUserEmail.Text.Length == 0)
+            {
+                MessageBoxResult error = MessageBox.Show("Enter Username");
+                tbUserEmail.Focus();
+            }
+            else
+            {
+                MainWindow mw = new MainWindow();
+                mw.Show();
+                this.Close();
+            }
+
 
         }
 
