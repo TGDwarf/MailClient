@@ -70,20 +70,37 @@ namespace TestMailClient
 
         }
 
-
-    }
-    [TestClass]
-    public class TestEmailSend
-    {
-        string username1 = "tgdxof@gmail.com";
-        string password1 = "MailClient";
-        string subject = "*Subject* this is a test";
-        string EmailContent = "Email content, something, something, something, something, something\nsomething, something, something";
+        [TestMethod]
+        public void TestGetBody()
+        {
+            List<OpenPop.Mime.Message> Inbox = new List<OpenPop.Mime.Message>();
+            List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
+            allMessages = OpenPopParser.getAllMessages("pop.gmail.com", 995, true, username1, password1);
+            foreach (var message in allMessages)
+            {
+                if (message.Headers.From.ToString() != username1)
+                {
+                    Inbox.Add(message);
+                }
+            }
+            string BodyIndex = OpenPopParser.Body(0, Inbox);
+        }
 
         [TestMethod]
-        public void TestSendEmail()
+        [ExpectedException(typeof(IndexOutOfRangeException))]
+        public void TestGetBodyWithTooBigIndex()
         {
-            OpenPopParser.sendMail("smtp.gmail.com", 587, true, "sniffern@msn.com", subject, EmailContent, username1, password1);
+            List<OpenPop.Mime.Message> Inbox = new List<OpenPop.Mime.Message>();
+            List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
+            allMessages = OpenPopParser.getAllMessages("pop.gmail.com", 995, true, username1, password1);
+            foreach (var message in allMessages)
+            {
+                if (message.Headers.From.ToString() != username1)
+                {
+                    Inbox.Add(message);
+                }
+            }
+            string BodyIndex = OpenPopParser.Body(9, Inbox);
         }
     }
 }
