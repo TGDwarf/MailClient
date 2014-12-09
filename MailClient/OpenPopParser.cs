@@ -16,13 +16,9 @@ namespace MailClient
         /// <summary>
         ///  Method to pull all messages from the mailserver
         /// </summary>
-        /// <param name="hostname"> Hostname gmail: pop.gmail.com / Hostname outlook: pop3.live.com </param>
-        /// <param name="port"> SSL port: 995 </param>
-        /// <param name="useSsl"> use SSL: true </param>
-        /// <param name="username"> Email / Username: tgdxof@gmail.com / tgdxof@live.com </param>
-        /// <param name="password"> Password: MailClient </param>
-        /// <returns></returns>
-        public static List<Message> getAllMessages()
+
+        /// <returns> Returns a list with all the messages</returns>
+        public static List<Message> getIncommingOrSentMessages(string incommingOrSent)
         {
             if (string.IsNullOrWhiteSpace(Users.receiveHostname))
             {
@@ -52,18 +48,29 @@ namespace MailClient
                     int messageCount = client.GetMessageCount();
 
                     //get mails to client from server
-                    List<Message> allMessages = new List<Message>(messageCount);
+                    List<Message> IncommingOrSentMessages = new List<Message>(messageCount);
 
                     // Messages are numbered in the interval: [1, messageCount]
                     // Ergo: message numbers are 1-based.
                     // Most servers give the latest message the highest number
                     for (int i = messageCount; i > 0; i--)
                     {
-                        allMessages.Add(client.GetMessage(i));
-
+                        if (incommingOrSent.ToLower() == "incomming")
+                        {
+                            if (client.GetMessage(i).Headers.To[0].ToString() == Users.username)
+                            {
+                                IncommingOrSentMessages.Add(client.GetMessage(i));
+                            }
+                        }
+                        else if (incommingOrSent.ToLower() == "sent")
+                        {
+                            if (client.GetMessage(i).Headers.From.ToString() == Users.username)
+                            {
+                                IncommingOrSentMessages.Add(client.GetMessage(i));
+                            }
+                        }
                     }
-                    
-                    return allMessages;
+                    return IncommingOrSentMessages;
                 }
             }
         }
