@@ -83,6 +83,7 @@ namespace TestMailClient
                     Inbox.Add(message);
                 }
             }
+            string subby = allMessages[0].Headers.Subject.ToString();
             string BodyIndex = OpenPopParser.Body(0, Inbox);
         }
 
