@@ -58,7 +58,7 @@
                 <Label x:Name="lblSpam" Content="Spam" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblSpam_MouseLeftButtonUp" />
                 <Label x:Name="lblTrash" Content="Trash" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblTrash_MouseLeftButtonUp" />
             </StackPanel>
-            <DataGrid x:Name="Mailview_DataGrid" AutoGenerateColumns="False" Grid.Column="1" IsReadOnly="False" Margin="10,10,0,0" Grid.Row="2" ItemsSource="{Binding}" Visibility="Hidden" >
+            <DataGrid x:Name="Mailview_DataGrid" AutoGenerateColumns="False" Grid.Column="1" IsReadOnly="False" Margin="10,10,0,0" Grid.Row="2" ItemsSource="{Binding}" Visibility="Visible" >
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Marked"/>
                     <DataGridTextColumn Binding="{Binding Path=Headers.From}" Header="From"/>
