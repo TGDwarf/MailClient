@@ -14,10 +14,10 @@ namespace MailClient
     public partial class OpenPopParser
     {
         /// <summary>
-        ///  Method to pull all messages from the mailserver
+        /// Method to fetch email from mailserver, uses argument in order to sort sent and incomming.
         /// </summary>
-
-        /// <returns> Returns a list with all the messages</returns>
+        /// <param name="incommingOrSent"> use "incomming" or "sent" in order to fetch the selected emails. </param>
+        /// <returns> a list of emails, either sent or incomming.</returns>
         public static List<Message> getIncommingOrSentMessages(string incommingOrSent)
         {
             if (string.IsNullOrWhiteSpace(Users.receiveHostname))
