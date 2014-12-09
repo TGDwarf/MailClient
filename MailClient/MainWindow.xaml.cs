@@ -49,10 +49,10 @@ namespace MailClient
         /// </summary>
         private void GetAllMail()
         {
-            allEmails = OpenPopParser.getAllMessages(LoginWindow.UserEmailProvider, 995, true, LoginWindow.UserEmail, LoginWindow.UserPassword);
+            allEmails = OpenPopParser.getAllMessages();
             foreach (Message item in allEmails)
             {
-                if (item.Headers.From.ToString() != LoginWindow.UserEmail)
+                if (item.Headers.From.ToString() != Users.username)
                 {
                     allIncomingEmails.Add(item);
                 }
@@ -202,7 +202,7 @@ namespace MailClient
 
             if (msg.FindAllAttachments().Count > 0)
             {
-                result = new BitmapImage(new Uri(@"D:\Google Drive\Projects\Programming\MailClient\MailClient\MailClient\Images\PaperClip.png"));
+                //result = new BitmapImage(new Uri(@"D:\Google Drive\Projects\Programming\MailClient\MailClient\MailClient\Images\PaperClip.png"));
             }
             return result;
         }

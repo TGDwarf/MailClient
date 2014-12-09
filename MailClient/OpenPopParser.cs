@@ -22,17 +22,17 @@ namespace MailClient
         /// <param name="username"> Email / Username: tgdxof@gmail.com / tgdxof@live.com </param>
         /// <param name="password"> Password: MailClient </param>
         /// <returns></returns>
-        public static List<Message> getAllMessages(string hostname, int port, bool useSsl, string username, string password)
+        public static List<Message> getAllMessages()
         {
-            if (string.IsNullOrWhiteSpace(hostname))
+            if (string.IsNullOrWhiteSpace(Users.receiveHostname))
             {
                 throw new ArgumentException("Hostname cannot be empty, null or only contain whitespaces");
             }
-            else if (port != 995)
+            else if (Users.receivePort != 995)
             {
-                throw new IndexOutOfRangeException("SSL port has to be 995 port is: " + port);
+                throw new IndexOutOfRangeException("SSL port has to be 995 port is: " + Users.receivePort);
             }
-            else if (useSsl == false)
+            else if (Users.useSsl == false)
             {
                 throw new ArgumentException("UseSsl must be set true, else it won't connect.");
             }
@@ -42,11 +42,11 @@ namespace MailClient
                 using (Pop3Client client = new Pop3Client())
                 {
                     //Connecting to client
-                    client.Connect(hostname, port, useSsl);
+                    client.Connect(Users.receiveHostname, Users.receivePort, Users.useSsl);
 
                     //Authenticating user / login(using 'recent:' due to Gmail is syncing sesson vice. if it is not present, it will only read
                     //the mails the first time, and will not find them afterwards)
-                    client.Authenticate("recent:" + username, password);
+                    client.Authenticate("recent:" + Users.username, Users.password);
                     
                     //count the number of mail on the server.
                     int messageCount = client.GetMessageCount();
@@ -69,27 +69,23 @@ namespace MailClient
         }
         
         /// <summary>
-        /// "smtp.gmail.com", 587, true,
+        /// method to send mails.
         /// </summary>
-        /// <param name="Hostname"> Hostname gmail: pop.gmail.com / Hostname outlook: pop3.live.com </param>
-        /// <param name="SslPort"> TLS port: 587 </param>
-        /// <param name="UseSsl"> use SSL: true </param>
         /// <param name="SendTo"> Email address receiver </param>
         /// <param name="subject"> Email subject </param>
         /// <param name="EmailContent"> main email content / Body </param>
-        /// <param name="username1"> Username for sender </param>
-        /// <param name="password1"> Password for sender.</param>
-        public static void sendMail(string Hostname, int Port, bool UseSsl, string SendTo, string subject, string EmailContent, string username1, string password1)
+        public static void sendMail(string SendTo, string subject, string EmailContent)
         {
-            if (string.IsNullOrWhiteSpace(Hostname))
+            if (string.IsNullOrWhiteSpace(Users.sendHostname))
             {
                 throw new ArgumentException("Hostname cannot be empty, null or only contain whitespaces");
             }
-            else if (Port != 587)
+            else if (Users.sendPort != 587 && Users.sendPort != 465)
             {
-                throw new IndexOutOfRangeException("SSL/TLS port has to be 587! port is: " + Port);
+                throw new IndexOutOfRangeException("SSL/TLS port has to be 587 for gmail and 465 for outlook! port is: " + Users.sendPort);
             }
-            else if (UseSsl == false)
+
+            else if (Users.useSsl == false)
             {
                 throw new ArgumentException("UseSsl must be set true, else it won't connect.");
             }
@@ -102,13 +98,13 @@ namespace MailClient
             }
             else
             {
-                var message = new MailMessage(username1, SendTo);
+                var message = new MailMessage(Users.username, SendTo);
                 message.Subject = subject;
                 message.Body = EmailContent;
-                using (SmtpClient sender = new SmtpClient(Hostname, Port))
+                using (SmtpClient sender = new SmtpClient(Users.sendHostname, Users.sendPort))
                 {
-                    sender.Credentials = new NetworkCredential(username1, password1);
-                    sender.EnableSsl = UseSsl;
+                    sender.Credentials = new NetworkCredential(Users.username, Users.password);
+                    sender.EnableSsl = Users.useSsl;
                     sender.Send(message);
                 }
             }
