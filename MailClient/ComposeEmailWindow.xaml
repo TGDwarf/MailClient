@@ -1,0 +1,58 @@
+﻿<Window x:Class="MailClient.ComposeEmailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ComposeEmailWindow" Height="351.22" Width="409.756">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="lblEmailTo" Content="To:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top"/>
+            <TextBox x:Name="tbEmailTo" Height="23" Margin="36,9,53,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+            <Label x:Name="lblCc" Content="Cc" HorizontalAlignment="Right" Margin="0,5,30,5" VerticalAlignment="Top"/>
+            <Label x:Name="lblBcc" Content="Bcc" HorizontalAlignment="Right" Margin="0,5,5,5" VerticalAlignment="Top"/>
+            <Label x:Name="lblSubject" Content="Subject:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top" Grid.Row="1"/>
+            <TextBox x:Name="tbSubject" Height="23" Margin="57,9,5,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Row="1"/>
+            <TextBox Margin="5,5,5,5" Grid.Row="2" TextWrapping="Wrap" Text=""/>
+            <StackPanel Margin="5" Grid.Row="3" VerticalAlignment="Top" Orientation="Horizontal">
+                <Button Content="Send" Height="20"/>
+                <Image Source="Images/FormatOptions.png" 
+                                           RenderOptions.BitmapScalingMode="Fant"
+                                           Stretch="Fill"
+                                           Width="20"
+                                           Height="20"
+                                           VerticalAlignment="Top"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="Center" />
+                <Image Source="Images/PaperClip.png" 
+                                           RenderOptions.BitmapScalingMode="Fant"
+                                           Stretch="Fill"
+                                           Width="20"
+                                           Height="20"
+                                           VerticalAlignment="Top"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="Center" />
+                <Image Source="Images/Smileys.png" 
+                                           RenderOptions.BitmapScalingMode="Fant"
+                                           Stretch="Fill"
+                                           Width="20"
+                                           Height="20"
+                                           VerticalAlignment="Top"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="Center" />
+                <Image Source="Images/TrashCan.png" 
+                                           RenderOptions.BitmapScalingMode="Fant"
+                                           Stretch="Fill"
+                                           Width="20"
+                                           Height="20"
+                                           VerticalAlignment="Top"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>

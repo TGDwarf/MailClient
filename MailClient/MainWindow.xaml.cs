@@ -15,6 +15,7 @@ namespace MailClient
     public partial class MainWindow : Window
     {
 
+        //Declaration of all the methods to be used in the class.
         public static string programName = "MailClient";
 
         public static double programVersion = 0.2;
@@ -35,11 +36,17 @@ namespace MailClient
         {
             InitializeComponent();
 
+            this.Width = System.Windows.SystemParameters.WorkArea.Width;
+            this.Height = System.Windows.SystemParameters.WorkArea.Height;
+
             GetAllMail();
 
             Mailview_DataGrid.ItemsSource = allIncomingEmails;
         }
 
+        /// <summary>
+        /// Gets all the mails from the currently selected mail account via the method located in OpenPopParser, see for info about variables.
+        /// </summary>
         private void GetAllMail()
         {
             allEmails = OpenPopParser.getAllMessages(LoginWindow.UserEmailProvider, 995, true, LoginWindow.UserEmail, LoginWindow.UserPassword);
@@ -59,31 +66,41 @@ namespace MailClient
 
         private void lblCompose_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-
+            Mailview_DataGrid.Visibility = Visibility.Hidden;
+            ComposeEmailWindow cew = new ComposeEmailWindow();
+            cew.Show();
+            cew.WindowStartupLocation = WindowStartupLocation.Manual;
+            cew.Left = (this.Left + this.Width) - cew.Width;
+            cew.Top = (this.Top + this.Height) - cew.Height;
         }
 
         private void lblInbox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            Mailview_DataGrid.Visibility = Visibility.Visible;
             Mailview_DataGrid.ItemsSource = allIncomingEmails;
         }
 
         private void lblSentMail_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            Mailview_DataGrid.Visibility = Visibility.Visible;
             Mailview_DataGrid.ItemsSource = allOutGoingEmails;
         }
 
         private void lblDrafts_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            Mailview_DataGrid.Visibility = Visibility.Visible;
             Mailview_DataGrid.ItemsSource = Drafts;
         }
 
         private void lblSpam_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            Mailview_DataGrid.Visibility = Visibility.Visible;
             Mailview_DataGrid.ItemsSource = Spam;
         }
 
         private void lblTrash_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            Mailview_DataGrid.Visibility = Visibility.Visible;
             Mailview_DataGrid.ItemsSource = Trash;
         }
 
