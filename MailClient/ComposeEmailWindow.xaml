@@ -3,54 +3,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ComposeEmailWindow" Height="351.22" Width="409.756">
     <Grid>
-        <Grid>
+        <Grid x:Name="dgComposeEmail">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Name="ToRow" Height="Auto"/>
+                <RowDefinition Name="CcRow"  Height="0"/>
+                <RowDefinition Name="BccRow" Height="0"/>
+                <RowDefinition Name="SubjectRow" Height="Auto"/>
+                <RowDefinition Name="MessageRow"/>
+                <RowDefinition Name="ActionsRow" Height="Auto"/>
             </Grid.RowDefinitions>
             <Label x:Name="lblEmailTo" Content="To:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top"/>
-            <TextBox x:Name="tbEmailTo" Height="23" Margin="36,9,53,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
-            <Label x:Name="lblCc" Content="Cc" HorizontalAlignment="Right" Margin="0,5,30,5" VerticalAlignment="Top"/>
-            <Label x:Name="lblBcc" Content="Bcc" HorizontalAlignment="Right" Margin="0,5,5,5" VerticalAlignment="Top"/>
-            <Label x:Name="lblSubject" Content="Subject:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top" Grid.Row="1"/>
-            <TextBox x:Name="tbSubject" Height="23" Margin="57,9,5,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Row="1"/>
-            <TextBox Margin="5,5,5,5" Grid.Row="2" TextWrapping="Wrap" Text=""/>
-            <StackPanel Margin="5" Grid.Row="3" VerticalAlignment="Top" Orientation="Horizontal">
-                <Button Content="Send" Height="20"/>
-                <Image Source="Images/FormatOptions.png" 
+            <TextBox x:Name="tbEmailTo" Height="20" Margin="36,9,53,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+            <Label x:Name="lblCc" Content="Cc" HorizontalAlignment="Right" Margin="0,5,30,5" VerticalAlignment="Top" MouseLeftButtonUp="lblCc_MouseLeftButtonUp"/>
+            <Label x:Name="lblBcc" Content="Bcc" HorizontalAlignment="Right" Margin="0,5,5,5" VerticalAlignment="Top" MouseLeftButtonUp="lblBcc_MouseLeftButtonUp"/>
+            <Label x:Name="lblCc2" Content="Cc:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top"  Grid.Row="1"/>
+            <TextBox x:Name="tbCc2" Height="20" Margin="36,9,5,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"  Grid.Row="1"/>
+            <Label x:Name="lblBc2" Content="Bcc:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top"  Grid.Row="2"/>
+            <TextBox x:Name="tbBc2" Height="20" Margin="36,9,5,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"  Grid.Row="2"/>
+            <Label x:Name="lblSubject" Content="Subject:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top" Grid.Row="3"/>
+            <TextBox x:Name="tbSubject" Height="20" Margin="57,9,5,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Row="3"/>
+            <TextBox Margin="5,5,5,0" Grid.Row="4" TextWrapping="Wrap" Text=""/>
+            <StackPanel Margin="5" Grid.Row="5" VerticalAlignment="Top" Orientation="Horizontal">
+                <Button x:Name="btnEmailSend" Content="Send" Height="20" Click="btnEmailSend_Click"/>
+                <Image x:Name="imgEmailFormatOptions" Source="Images/FormatOptions.png" 
                                            RenderOptions.BitmapScalingMode="Fant"
                                            Stretch="Fill"
                                            Width="20"
                                            Height="20"
                                            VerticalAlignment="Top"
                                            Margin="0,0,0,0"
-                                           HorizontalAlignment="Center" />
-                <Image Source="Images/PaperClip.png" 
+                                           HorizontalAlignment="Center" MouseLeftButtonUp="imgEmailFormatOptions_MouseLeftButtonUp" />
+                <Image x:Name="imgEmailAttach" Source="Images/PaperClip.png" 
                                            RenderOptions.BitmapScalingMode="Fant"
                                            Stretch="Fill"
                                            Width="20"
                                            Height="20"
                                            VerticalAlignment="Top"
                                            Margin="0,0,0,0"
-                                           HorizontalAlignment="Center" />
-                <Image Source="Images/Smileys.png" 
+                                           HorizontalAlignment="Center" MouseLeftButtonUp="imgEmailAttach_MouseLeftButtonUp" />
+                <Image x:Name="imgEmailSmiley" Source="Images/Smileys.png" 
                                            RenderOptions.BitmapScalingMode="Fant"
                                            Stretch="Fill"
                                            Width="20"
                                            Height="20"
                                            VerticalAlignment="Top"
                                            Margin="0,0,0,0"
-                                           HorizontalAlignment="Center" />
-                <Image Source="Images/TrashCan.png" 
+                                           HorizontalAlignment="Center" MouseLeftButtonUp="imgEmailSmiley_MouseLeftButtonUp" />
+                <Image x:Name="imgEmailDiscard" Source="Images/TrashCan.png" 
                                            RenderOptions.BitmapScalingMode="Fant"
                                            Stretch="Fill"
                                            Width="20"
                                            Height="20"
                                            VerticalAlignment="Top"
                                            Margin="0,0,0,0"
-                                           HorizontalAlignment="Center" />
+                                           HorizontalAlignment="Center" MouseLeftButtonUp="imgEmailDiscard_MouseLeftButtonUp" />
             </StackPanel>
         </Grid>
 
