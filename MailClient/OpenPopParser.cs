@@ -114,6 +114,7 @@ namespace MailClient
             }
         }
         
+
         /// <summary>
         /// method to return the body of the emails
         /// </summary>
@@ -148,6 +149,32 @@ namespace MailClient
             }
             
             return body;
+        }
+
+        /// <summary>
+        /// Delete messages.
+        /// </summary>
+        /// <param name="client"> object with login information (hostname, Port, UseSsl, username, password.) </param>
+        /// <param name="messageIds"></param>
+        /// <returns></returns>
+        public static bool DeleteMessageByMessageId(Pop3Client client, string messageId)
+        {
+            // Get the number of messages on the POP3 server
+            int messageCount = client.GetMessageCount();
+            
+            // Run through each of these messages and download the headers
+            for (int messageItem = messageCount; messageItem > 0; messageItem--)
+            {
+                // If the Message ID of the current message is the same as the parameter given, delete that message
+                if (client.GetMessageHeaders(messageItem).MessageId == messageId)
+                {
+                    // Delete
+                    client.DeleteMessage(messageItem);
+                    return true;
+                }
+            }
+            // We did not find any message with the given messageId, report this back
+            return false;
         }
     }
 }
