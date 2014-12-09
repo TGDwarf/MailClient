@@ -49,18 +49,8 @@ namespace MailClient
         /// </summary>
         private void GetAllMail()
         {
-            allEmails = OpenPopParser.getAllMessages();
-            foreach (Message item in allEmails)
-            {
-                if (item.Headers.From.ToString() != Users.username)
-                {
-                    allIncomingEmails.Add(item);
-                }
-                else
-                {
-                    allOutGoingEmails.Add(item);
-                }
-            }
+            allIncomingEmails = OpenPopParser.getIncommingOrSentMessages("incomming");
+            allOutGoingEmails = OpenPopParser.getIncommingOrSentMessages("sent");
 
         }
 
