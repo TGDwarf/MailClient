@@ -8,40 +8,53 @@ namespace TestMailClient
     [TestClass]
     public class TestEmailDelete
     {
+        /// <summary>
+        /// delete a email
+        /// </summary>
         [TestMethod]
-
         public void TestDeleteOfEmail()
         {
+            //populates the usersclass with information
             TestStarter.updateUsers();
-            List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
-            List<string> messageIds = new List<string>();
-            allMessages = OpenPopParser.getAllMessages();
-
+            //create a list for for inbox
+            List<OpenPop.Mime.Message> inbox = new List<OpenPop.Mime.Message>();
+            //populating list with emails from server
+            inbox = OpenPopParser.getIncommingOrSentMessages("incomming");
+            //initializing Pop3Client as client
             OpenPop.Pop3.Pop3Client client = new OpenPop.Pop3.Pop3Client();
-            client.Connect("pop.gmail.com",995,true);
-            client.Authenticate("recent:" + Users.username, Users.password);
-            bool result = OpenPopParser.DeleteMessageByMessageId(client, allMessages[0].Headers.MessageId);
+            //giving the client the login information for 
+            client.Connect(Users.receiveHostname, Users.receivePort, Users.useSsl);
+            if (Users.receiveHostname.Contains("gmail")) { client.Authenticate("recent:" + Users.username, Users.password); }
+            else { client.Authenticate(Users.username, Users.password); }
+            
+
+            bool result = OpenPopParser.DeleteMessageByMessageId(client, inbox[0].Headers.MessageId);
             client.Disconnect();
         }
+        /// <summary>
+        /// delete multible emails
+        /// </summary>
         [TestMethod]
         public void TestDeleteOfMultibleEmail()
         {
+            //populates the usersclass with information
             TestStarter.updateUsers();
-            List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
+            List<OpenPop.Mime.Message> inbox = new List<OpenPop.Mime.Message>();
             List<string> messageIds = new List<string>();
 
-            allMessages = OpenPopParser.getAllMessages();
-            messageIds.Add(allMessages[0].Headers.MessageId);
-            messageIds.Add(allMessages[1].Headers.MessageId);
-            messageIds.Add(allMessages[2].Headers.MessageId);
-            messageIds.Add(allMessages[3].Headers.MessageId);
-            messageIds.Add(allMessages[4].Headers.MessageId);
+            inbox = OpenPopParser.getIncommingOrSentMessages("incomming");
+            messageIds.Add(inbox[0].Headers.MessageId);
+            messageIds.Add(inbox[1].Headers.MessageId);
+            messageIds.Add(inbox[2].Headers.MessageId);
+            messageIds.Add(inbox[3].Headers.MessageId);
+            messageIds.Add(inbox[4].Headers.MessageId);
 
             OpenPop.Pop3.Pop3Client client = new OpenPop.Pop3.Pop3Client();
             foreach (var item in messageIds)
             {
-                client.Connect("pop.gmail.com", 995, true);
-                client.Authenticate("recent:" + Users.username, Users.password);
+                client.Connect(Users.receiveHostname, Users.receivePort, Users.useSsl);
+                if (Users.receiveHostname.Contains("gmail")) { client.Authenticate("recent:" + Users.username, Users.password); }
+                else { client.Authenticate(Users.username, Users.password); }
                 if (OpenPopParser.DeleteMessageByMessageId(client, item))
                 {
                     client.Disconnect();

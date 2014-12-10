@@ -6,6 +6,7 @@ namespace TestMailClient
 {
     public partial class TestStarter
     {
+        //poplulate users class with login information / server information
         public static void updateUsers()
         {
             Users.username = "tgdxof@gmail.com";
@@ -16,6 +17,7 @@ namespace TestMailClient
             Users.sendHostname = "smtp.gmail.com";
             Users.sendPort = 587;
         }
+        //poplulate users class with login information / server information -- receivePort is invalid
         public static void updateUsersWrongReceiveport()
         {
             Users.username = "tgdxof@gmail.com";
@@ -26,6 +28,7 @@ namespace TestMailClient
             Users.sendHostname = "smtp.gmail.com";
             Users.sendPort = 587;
         }
+        //poplulate users class with login information / server information -- useSsl is invalid
         public static void updateUsersInvalidSSL()
         {
             Users.username = "tgdxof@gmail.com";
@@ -36,6 +39,7 @@ namespace TestMailClient
             Users.sendHostname = "smtp.gmail.com";
             Users.sendPort = 587;
         }
+        //poplulate users class with login information / server information -- receiveHostname is invalid
         public static void updateUsersEmptyReceiveHostname()
         {
             Users.username = "tgdxof@gmail.com";
@@ -46,6 +50,7 @@ namespace TestMailClient
             Users.sendHostname = "smtp.gmail.com";
             Users.sendPort = 587;
         }
+        //poplulate users class with login information / server information -- sendHostname is invalid
         public static void updateUsersEmptySendHostname()
         {
             Users.username = "tgdxof@gmail.com";
@@ -56,6 +61,7 @@ namespace TestMailClient
             Users.sendHostname = "";
             Users.sendPort = 587;
         }
+        //poplulate users class with login information / server information --sendPort is invalid
         public static void updateUsersInvalidSendPort()
         {
             Users.username = "tgdxof@gmail.com";
