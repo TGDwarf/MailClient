@@ -47,31 +47,18 @@ namespace MailClient
             {            
                 //making the first element.
                 writer.WriteStartElement("Incomming Emails");
+                int i = 0;
                 //running through all the emails
                 foreach (var Email in incommingMails)
                 {
-                    //fetching the body of the mail.
-                    string body = "";
-                    OpenPop.Mime.MessagePart bodyPart = Email.FindFirstHtmlVersion();
-                    if (bodyPart != null)
-                    {
-                        body = bodyPart.GetBodyAsText();
-                    }
-                    else
-                    {
-                        bodyPart = Email.FindFirstPlainTextVersion();
-                        if (bodyPart != null)
-                        {
-                            body = bodyPart.GetBodyAsText();
-                        }
-                    }
                     writer.WriteStartElement("Email");                                      //creating the next element in xml
                     writer.WriteElementString("From", Email.Headers.From.ToString());       //writing 'From'
                     writer.WriteElementString("To", Email.Headers.To[0].ToString());        //writing 'To'
                     writer.WriteElementString("Subject", Email.Headers.Subject.ToString()); //writing 'subject'
                     writer.WriteElementString("Time", Email.Headers.DateSent.ToString());   //writing 'TimeSent'
-                    writer.WriteElementString("Body", body );                               //writing 'body'
+                    writer.WriteElementString("Body", OpenPopParser.Body(i,incommingMails));//writing 'body'
                     writer.WriteEndElement();                                               //ending element
+                    i++;
                 }
                 writer.WriteEndElement();                                                   //ending element           
                 writer.Flush();                                                             //writes all data from buffer
@@ -82,31 +69,18 @@ namespace MailClient
             {
                 //making the first element.
                 writer.WriteStartElement("Sent Emails");
+                int i = 0;
                 //running through all the emails
                 foreach (var Email in sentMails)
                 {
-                    //fetching the body of the mail.
-                    string body = "";
-                    OpenPop.Mime.MessagePart bodyPart = Email.FindFirstHtmlVersion();
-                    if (bodyPart != null)
-                    {
-                        body = bodyPart.GetBodyAsText();
-                    }
-                    else
-                    {
-                        bodyPart = Email.FindFirstPlainTextVersion();
-                        if (bodyPart != null)
-                        {
-                            body = bodyPart.GetBodyAsText();
-                        }
-                    }
                     writer.WriteStartElement("Email");                                      //creating the next element in xml
                     writer.WriteElementString("From", Email.Headers.From.ToString());       //writing 'From'
                     writer.WriteElementString("To", Email.Headers.To[0].ToString());        //writing 'To'
                     writer.WriteElementString("Subject", Email.Headers.Subject.ToString()); //writing 'subject'
                     writer.WriteElementString("Time", Email.Headers.DateSent.ToString());   //writing 'TimeSent'
-                    writer.WriteElementString("Body", body );                               //writing 'body'
+                    writer.WriteElementString("Body", OpenPopParser.Body(i,sentMails));     //writing 'body'
                     writer.WriteEndElement();                                               //ending element
+                    i++;
                 }
                 writer.WriteEndElement();                                                   //ending element           
                 writer.Flush();                                                             //writes all data from buffer
