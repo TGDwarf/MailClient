@@ -46,9 +46,9 @@
             <ComboBox x:Name="cbRoleSelector" Text="Mail" Margin="10" Grid.Row="1" Width="120" Height="22" IsEditable="True" IsReadOnly="True" />
 
             <StackPanel x:Name="spFunctionButtons" Grid.Column="1" Margin="10" Grid.RowSpan="1" Orientation="Horizontal" Grid.Row="1">
-                <Button x:Name="btnSelect" Content="Select" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
-                <Button x:Name="btnRefresh" Content="Refresh" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
-                <Button x:Name="btnFunction" Content="Function" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight"/>
+                <Button x:Name="btnSelect" Content="Select" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight" Click="btnSelect_Click"/>
+                <Button x:Name="btnRefresh" Content="Refresh" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight" Click="btnRefresh_Click"/>
+                <Button x:Name="btnFunction" Content="Function" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" FlowDirection="LeftToRight" Click="btnFunction_Click"/>
             </StackPanel>
             <StackPanel Margin="10,10,10,0" Grid.Row="2">
                 <Label x:Name="lblCompose" Content="Compose" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="lblCompose_MouseLeftButtonUp" />

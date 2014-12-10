@@ -231,6 +231,22 @@ namespace MailClient
 			mailViewer.Visibility = Visibility.Visible;
 			mailViewer.Navigate(html);
 		}
+
+		private void btnRefresh_Click(object sender, RoutedEventArgs e)
+		{
+			Mailview_DataGrid.ItemsSource = null;
+			Mailview_DataGrid.ItemsSource = currentEmailsList;
+		}
+
+		private void btnSelect_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void btnFunction_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 
 	/// <summary>
