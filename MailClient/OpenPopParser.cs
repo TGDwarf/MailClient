@@ -16,7 +16,7 @@ namespace MailClient
         /// <summary>
         /// Method to fetch email from mailserver, uses argument in order to sort sent and incomming.
         /// </summary>
-        /// <param name="incommingOrSent"> use "incomming" or "sent" in order to fetch the selected emails. </param>
+        /// <param name="incommingOrSent"> use "incomming", "sent" or "all" in order to fetch the selected emails. </param>
         /// <returns> a list of emails, either sent or incomming.</returns>
         public static List<Message> getIncommingOrSentMessages(string incommingOrSent)
         {
@@ -42,7 +42,8 @@ namespace MailClient
 
                     //Authenticating user / login(using 'recent:' due to Gmail is syncing sesson vice. if it is not present, it will only read
                     //the mails the first time, and will not find them afterwards)
-                    client.Authenticate("recent:" + Users.username, Users.password);
+                    if (Users.receiveHostname.Contains("gmail")) { client.Authenticate("recent:" + Users.username, Users.password); }
+                    else { client.Authenticate(Users.username, Users.password); }
                     
                     //count the number of mail on the server.
                     int messageCount = client.GetMessageCount();
@@ -68,6 +69,10 @@ namespace MailClient
                             {
                                 IncommingOrSentMessages.Add(client.GetMessage(i));
                             }
+                        }
+                        else if (incommingOrSent.ToLower() == "all")
+                        {
+                            IncommingOrSentMessages.Add(client.GetMessage(i));
                         }
                     }
                     return IncommingOrSentMessages;
