@@ -51,11 +51,10 @@ namespace MailClient
                     //get mails to client from server
                     List<Message> IncommingOrSentMessages = new List<Message>(messageCount);
 
-                    // Messages are numbered in the interval: [1, messageCount]
-                    // Ergo: message numbers are 1-based.
-                    // Most servers give the latest message the highest number
+                    //run through all messages backwards, in order to make the newest email appear in top
                     for (int i = messageCount; i > 0; i--)
                     {
+                        //sort: emails to return only incomming / Inbox
                         if (incommingOrSent.ToLower() == "incomming")
                         {
                             if (client.GetMessage(i).Headers.To[0].ToString() == Users.username)
@@ -63,6 +62,7 @@ namespace MailClient
                                 IncommingOrSentMessages.Add(client.GetMessage(i));
                             }
                         }
+                        //sort: emails to return only sent
                         else if (incommingOrSent.ToLower() == "sent")
                         {
                             if (client.GetMessage(i).Headers.From.ToString() == Users.username)
@@ -70,11 +70,13 @@ namespace MailClient
                                 IncommingOrSentMessages.Add(client.GetMessage(i));
                             }
                         }
+                        //sort: emails to return all emails
                         else if (incommingOrSent.ToLower() == "all")
                         {
                             IncommingOrSentMessages.Add(client.GetMessage(i));
                         }
                     }
+                    //returns the email list.
                     return IncommingOrSentMessages;
                 }
             }
@@ -101,6 +103,7 @@ namespace MailClient
             {
                 throw new ArgumentException("UseSsl must be set true, else it won't connect.");
             }
+            //Regex used to filter email, only valid goes through
             else if (!Regex.IsMatch(SendTo,
                 @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
                 @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
@@ -110,11 +113,14 @@ namespace MailClient
             }
             else
             {
+                //Initializes MailMessage and filling it with information about the email
                 var message = new MailMessage(Users.username, SendTo);
                 message.Subject = subject;
                 message.Body = EmailContent;
+                //initializes smtpclient, with the mailserver information
                 using (SmtpClient sender = new SmtpClient(Users.sendHostname, Users.sendPort))
                 {
+                    //giving sender login credentials, and the email specifications
                     sender.Credentials = new NetworkCredential(Users.username, Users.password);
                     sender.EnableSsl = Users.useSsl;
                     sender.Send(message);
@@ -138,12 +144,13 @@ namespace MailClient
             }
             else if (InboxOrSent.Count > MessageIndex)
             {
-                
+                //specifies which message to get the body from
                 Message getBodyFromMessage = InboxOrSent[MessageIndex];
-
+                //casting messagepart in order to fetch the body from the email(message)
                 OpenPop.Mime.MessagePart bodyPart = getBodyFromMessage.FindFirstHtmlVersion();
                 if (bodyPart != null)
                 {
+                    //cast body as html
                     body = bodyPart.GetBodyAsText();
                 }
                 else
@@ -151,11 +158,12 @@ namespace MailClient
                     bodyPart = getBodyFromMessage.FindFirstPlainTextVersion();
                     if (bodyPart != null)
                     {
+                        //cast body as plain text
                         body = bodyPart.GetBodyAsText();
                     }
                 }
             }
-            
+            //return body as string
             return body;
         }
 
