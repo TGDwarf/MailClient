@@ -24,42 +24,40 @@ namespace MailClient
             InitializeComponent();
         }
 
-        public void SaveMail()
+        public static void SaveMail()
         {
 
         }
 
         private void btnEmailSend_Click(object sender, RoutedEventArgs e)
         {
-
+            //OpenPopParser.sendMail()
         }
 
         private void imgEmailFormatOptions_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // TODO:
-            //if (FormatOptions = 0)
-            //{
-            //    Add row to grid above icon line
-            //}
-            //else
-            //{
-            //    Remove row from grid
-            //}
+            // Format options for text
         }
 
         private void imgEmailAttach_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            // POPup Window of selectfile
         }
 
         private void imgEmailSmiley_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            //TODO Line of smileys
         }
 
         private void imgEmailDiscard_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            tbEmailTo.Clear();
+            tbSubject.Clear();
+            tbCc2.Clear();
+            tbBc2.Clear();
+            tbMessage.Clear();
 
+            //TODO Delete local copy of email
         }
 
         private void lblCc_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

@@ -22,7 +22,7 @@
             <TextBox x:Name="tbBc2" Height="20" Margin="36,9,5,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"  Grid.Row="2"/>
             <Label x:Name="lblSubject" Content="Subject:" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Top" Grid.Row="3"/>
             <TextBox x:Name="tbSubject" Height="20" Margin="57,9,5,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Row="3"/>
-            <TextBox Margin="5,5,5,0" Grid.Row="4" TextWrapping="Wrap" Text=""/>
+            <TextBox x:Name="tbMessage" Margin="5,5,5,0" Grid.Row="4" TextWrapping="Wrap" Text=""/>
             <StackPanel Margin="5" Grid.Row="5" VerticalAlignment="Top" Orientation="Horizontal">
                 <Button x:Name="btnEmailSend" Content="Send" Height="20" Click="btnEmailSend_Click"/>
                 <Image x:Name="imgEmailFormatOptions" Source="Images/FormatOptions.png" 
