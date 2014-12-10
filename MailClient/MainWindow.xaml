@@ -61,13 +61,13 @@
             <DataGrid x:Name="Mailview_DataGrid" AutoGenerateColumns="False" Grid.Column="1" IsReadOnly="False" Margin="10" Grid.Row="2" ItemsSource="{Binding}" Visibility="Visible" >
                 <DataGrid.Resources>
                     <Style TargetType="DataGridRow">
-                        <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                        <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_DoubleClick"/>
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Marked"/>
-                    <DataGridTextColumn Binding="{Binding Path=Headers.From}" Header="From"/>
-                    <DataGridTextColumn Binding="{Binding Path=Headers.Subject}" Header="Subject"/>
+                    <DataGridTextColumn Binding="{Binding Path=Headers.From, Mode=OneTime}" Header="From" />
+                    <DataGridTextColumn Binding="{Binding Path=Headers.Subject, Mode=OneTime}" Header="Subject"/>
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -84,11 +84,11 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding Path=Headers.DateSent}" Header="DateSent"/>
+                    <DataGridTextColumn Binding="{Binding Path=Headers.DateSent, Mode=OneTime}" Header="DateSent"/>
                 </DataGrid.Columns>
                 
             </DataGrid>
-            <WebBrowser Name="webBrowser" Grid.Column="1" Grid.Row="2" Margin="10" Visibility="Hidden" />
+            <Frame Name="mailViewer" Grid.Column="1" Grid.Row="2" Margin="10" Visibility="Hidden" />
         </Grid>
 
     </Grid>
