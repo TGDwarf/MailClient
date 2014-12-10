@@ -14,7 +14,7 @@ namespace TestMailClient
             TestStarter.updateUsers();
             //This test is to verify that retrieving the Email list actually works
             List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
-            allMessages = OpenPopParser.getAllMessages();
+            allMessages = OpenPopParser.getIncommingOrSentMessages("incomming");
             foreach (var message in allMessages)
             {
                 if (message.Headers.From.ToString() == Users.username)
@@ -44,7 +44,7 @@ namespace TestMailClient
         {
             TestStarter.updateUsersEmptyReceiveHostname();
             //testing Hostname is null, empty or only contains whitespaces.
-            List<OpenPop.Mime.Message> EmailList = OpenPopParser.getAllMessages();
+            List<OpenPop.Mime.Message> EmailList = OpenPopParser.getIncommingOrSentMessages("incomming");
 
         }
 
@@ -54,7 +54,7 @@ namespace TestMailClient
         {
             TestStarter.updateUsersWrongReceiveport();
             //testing SslPort, if not 995, throw exception.
-            List<OpenPop.Mime.Message> EmailList = OpenPopParser.getAllMessages();
+            List<OpenPop.Mime.Message> EmailList = OpenPopParser.getIncommingOrSentMessages("incomming");
 
         }
 
@@ -64,7 +64,7 @@ namespace TestMailClient
         {
             TestStarter.updateUsersInvalidSSL();
             //testing UseSsl, if not true, throw exception.
-            List<OpenPop.Mime.Message> EmailList = OpenPopParser.getAllMessages();
+            List<OpenPop.Mime.Message> EmailList = OpenPopParser.getIncommingOrSentMessages("incomming");
 
         }
 
@@ -74,7 +74,7 @@ namespace TestMailClient
             TestStarter.updateUsers();
             List<OpenPop.Mime.Message> Inbox = new List<OpenPop.Mime.Message>();
             List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
-            allMessages = OpenPopParser.getAllMessages();
+            allMessages = OpenPopParser.getIncommingOrSentMessages("incomming");
             foreach (var message in allMessages)
             {
                 if (message.Headers.From.ToString() != Users.username)
@@ -93,7 +93,7 @@ namespace TestMailClient
             TestStarter.updateUsers();
             List<OpenPop.Mime.Message> Inbox = new List<OpenPop.Mime.Message>();
             List<OpenPop.Mime.Message> allMessages = new List<OpenPop.Mime.Message>();
-            allMessages = OpenPopParser.getAllMessages();
+            allMessages = OpenPopParser.getIncommingOrSentMessages("incomming");
             foreach (var message in allMessages)
             {
                 if (message.Headers.From.ToString() != Users.username)
