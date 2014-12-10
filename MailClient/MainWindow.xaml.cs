@@ -172,6 +172,7 @@ namespace MailClient
 		private void lblInbox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			mailViewer.Visibility = Visibility.Hidden;
+			Mailview_DataGrid.Visibility = Visibility.Visible;
 			currentEmailsList = allIncomingEmails;
 			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.indbox;
@@ -183,6 +184,7 @@ namespace MailClient
 		private void lblSentMail_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			mailViewer.Visibility = Visibility.Hidden;
+			Mailview_DataGrid.Visibility = Visibility.Visible;
 			currentEmailsList = allOutGoingEmails;
 			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.sentmail;
@@ -194,6 +196,7 @@ namespace MailClient
 		private void lblDrafts_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			mailViewer.Visibility = Visibility.Hidden;
+			Mailview_DataGrid.Visibility = Visibility.Visible;
 			currentEmailsList = Drafts;
 			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.drafts;
@@ -205,6 +208,7 @@ namespace MailClient
 		private void lblSpam_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			mailViewer.Visibility = Visibility.Hidden;
+			Mailview_DataGrid.Visibility = Visibility.Visible;
 			currentEmailsList = Spam;
 			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.spam;
@@ -216,6 +220,7 @@ namespace MailClient
 		private void lblTrash_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			mailViewer.Visibility = Visibility.Hidden;
+			Mailview_DataGrid.Visibility = Visibility.Visible;
 			currentEmailsList = Trash;
 			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.trash;
@@ -238,15 +243,38 @@ namespace MailClient
 			Mailview_DataGrid.ItemsSource = currentEmailsList;
 		}
 
-		private void btnSelect_Click(object sender, RoutedEventArgs e)
-		{
-
-		}
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    List<DataGridViewRow> rows_with_checked_column = new List<DataGridViewRow>();
+        //    foreach (DataGridViewRow row in dataGridView1)
+        //    {
+        //        if (Convert.ToBoolean(row.Cells[CheckBoxColumn1.Name].Value) == true)
+        //        {
+        //            rows_with_checked_column.Add(row);
+        //        }
+        //    }
+        //    // Do what you want with the check rows
+        //}
 
 		private void btnFunction_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
+
+        //private void btnDelete_Click(object sender, RoutedEventArgs e)
+        //{
+        //    List<Message> rows_with_checked_column = new List<Message>();
+
+        //    foreach (Message message in Mailview_DataGrid.Items)
+        //    {
+        //        CheckBox chk = sender as CheckBox;
+        //        chk = Mailview_DataGrid.Columns[0].GetCellContent() as CheckBox;
+        //        if (chk != null)
+        //        {
+        //            rows_with_checked_column.Add(message);
+        //        }
+        //    }
+        //}
 	}
 
 	/// <summary>
