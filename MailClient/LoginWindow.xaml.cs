@@ -10,13 +10,9 @@ namespace MailClient
     public partial class LoginWindow : Window
     {
 
-        public static string UserEmail;
-
-        public static string UserPassword;
-
         public static string UserEmailProvider;
 
-        public static List<Tuple<string, string>> listofhostprovidertuples = new List<Tuple<String, String>>();
+        public static List<Tuple<string, string, int, string, int>> listofhostprovidertuples = new List<Tuple<string, string, int, string, int>>();
 
         public LoginWindow()
         {
@@ -37,8 +33,8 @@ namespace MailClient
 
         private void AddEmailProvidersToList()
         {
-            listofhostprovidertuples.Add(new Tuple<String, String>("Gmail", "pop.gmail.com"));
-            listofhostprovidertuples.Add(new Tuple<String, String>("Outlook", "pop3.live.com"));
+            listofhostprovidertuples.Add(new Tuple<string, string, int, string,int>("Gmail", "pop.gmail.com", 995, "smtp.gmail.com", 587));
+            listofhostprovidertuples.Add(new Tuple<string, string, int, string, int>("Outlook", "pop3.live.com", 995, "smtp.live.com", 465));
         }
 
         private void AddEmailProviderToCB()
@@ -58,11 +54,25 @@ namespace MailClient
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            UserEmail = tbUserEmail.Text;
-
-            UserPassword = pbUserPassword.Password;
-
-            UserEmailProvider = cbEmailProvider.SelectedValue.ToString();
+            //populating the user class with the login information to handle mail functions later on
+            Users.username = tbUserEmail.Text;
+            Users.password = pbUserPassword.Password;
+            Users.receiveHostname = cbEmailProvider.SelectedValue.ToString();
+            Users.useSsl = true;
+            
+            if (cbEmailProvider.SelectedIndex == 0)
+            {
+                Users.receivePort = listofhostprovidertuples[0].Item3;
+                Users.sendHostname = listofhostprovidertuples[0].Item4;
+                Users.sendPort = listofhostprovidertuples[0].Item5;
+            }
+            else if (cbEmailProvider.SelectedIndex == 1)
+            {
+                Users.receivePort = listofhostprovidertuples[1].Item3;
+                Users.sendHostname = listofhostprovidertuples[1].Item4;
+                Users.sendPort = listofhostprovidertuples[1].Item5;
+            }
+            
 
             if (tbUserEmail.Text.Length == 0)
             {
