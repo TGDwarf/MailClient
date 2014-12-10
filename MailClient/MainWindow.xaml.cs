@@ -22,6 +22,8 @@ namespace MailClient
 
 		public static double programVersion = 0.2;
 
+		public List<Message> currentEmailsList = new List<Message>();
+
 		public List<Message> allEmails = new List<Message>();
 
 		public List<Message> allIncomingEmails = new List<Message>();
@@ -40,6 +42,11 @@ namespace MailClient
 
 		public mailclientMenu mailclientmenu;
 
+		/// <summary>
+		/// Initializes components.
+		/// Sets the height and width of the window to the working area of the user screen.
+		/// Sets the inbox to be shown next time the backgroundworker gets mails.
+		/// </summary>
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -47,14 +54,16 @@ namespace MailClient
 			this.Width = System.Windows.SystemParameters.WorkArea.Width;
 			this.Height = System.Windows.SystemParameters.WorkArea.Height;
 
-			GetAllMail();
-
-			Mailview_DataGrid.ItemsSource = allIncomingEmails;
+			mailclientmenu = mailclientMenu.indbox;
 
 			StartUp();
 		}
 
 
+		/// <summary>
+		/// sets the currentemailslist used by the datagridrow double click method to allincomingemails, only used for the initial get loads
+		/// This method initializes the backgroundworker "getMailWorker"
+		/// </summary>
 		private void StartUp()
 		{
 			getMailWorker.WorkerReportsProgress = true;
@@ -64,28 +73,19 @@ namespace MailClient
 			GetMailWorkerStart();
 		}
 
-        private void TestSendMail()
-        {
-            for (int i = 0; i < 130; i++)
-            {
-                string subject = "Dette er test mail Nr " + i;
-                string emailindhold = "Her er en besked der også er i et for loop, dette er den " + i + "besked";
-                OpenPopParser.sendMail("smtp.gmail.com", 587, true, LoginWindow.UserEmail, subject, emailindhold, LoginWindow.UserEmail, LoginWindow.UserPassword);
-                Thread.Sleep(10);
-            }
-
-        }
-
+		/// <summary>
+		/// This method starts the backgroundworker
+		/// </summary>
 		private void GetMailWorkerStart()
 		{
 			getMailWorker.RunWorkerAsync();
 		}
 
-		private void UserControl_Loaded(object sender, RoutedEventArgs e)
-		{
-
-		}
-
+		/// <summary>
+		/// This is the work to be done by the backgroundworker
+		/// Gets all mail, reports progress to update GUI and sleeps for 100 miliseconds.
+		/// Time could be increased to reduce resource requirement. Kept low for testing purposes.
+		/// </summary>
 		private void DoWork(object sender, DoWorkEventArgs e)
 		{
 			for (int i = 0; i <= 9999; i++)
@@ -96,40 +96,50 @@ namespace MailClient
 			}
 		}
 
+		/// <summary>
+		/// This is called on the UI thread when ReportProgress method is called.
+		/// Uses a switch to determine which list to display in the datagrid.
+		/// </summary>
 		private void ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			switch (mailclientmenu)
 			{
 				case mailclientMenu.indbox:
 					Mailview_DataGrid.ItemsSource = null;
-					Mailview_DataGrid.ItemsSource = allIncomingEmails;
+					currentEmailsList = allIncomingEmails;
+					Mailview_DataGrid.ItemsSource = currentEmailsList;
 					break;
 				case mailclientMenu.sentmail:
 					Mailview_DataGrid.ItemsSource = null;
-					Mailview_DataGrid.ItemsSource = allOutGoingEmails;
+					currentEmailsList = allOutGoingEmails;
+					Mailview_DataGrid.ItemsSource = currentEmailsList;
 					break;
 				case mailclientMenu.drafts:
 					Mailview_DataGrid.ItemsSource = null;
-					Mailview_DataGrid.ItemsSource = Drafts;
+					currentEmailsList = Drafts;
+					Mailview_DataGrid.ItemsSource = currentEmailsList;
 					break;
 				case mailclientMenu.spam:
 					Mailview_DataGrid.ItemsSource = null;
-					Mailview_DataGrid.ItemsSource = Spam;
+					currentEmailsList = Spam;
+					Mailview_DataGrid.ItemsSource = currentEmailsList;
 					break;
 				case mailclientMenu.trash:
 					Mailview_DataGrid.ItemsSource = null;
-					Mailview_DataGrid.ItemsSource = Trash;
+					currentEmailsList = Trash;
+					Mailview_DataGrid.ItemsSource = currentEmailsList;
 					break;
 				default:
 					break;
 			}
-			// This is called on the UI thread when ReportProgress method is called
 		}
 
+		/// <summary>
+		/// This is called on the UI thread when the DoWork method completes, currently does nothing but is included nontheless.
+		/// </summary>
 		private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			// This is called on the UI thread when the DoWork method completes
-			// so it's a good place to hide busy indicators, or put clean up code
+			/// Include a call to start the worker again.
 		}
 
 
@@ -138,25 +148,15 @@ namespace MailClient
 		/// </summary>
 		private void GetAllMail()
 		{
-			allEmails = OpenPopParser.getAllMessages(LoginWindow.UserEmailProvider, 995, true, LoginWindow.UserEmail, LoginWindow.UserPassword);
-			allIncomingEmails.Clear();
-			allOutGoingEmails.Clear();
-			foreach (Message item in allEmails)
-			{
-				if (item.Headers.From.ToString() != LoginWindow.UserEmail)
-				{
-					
-					allIncomingEmails.Add(item);
-				}
-				else
-				{
-					
-					allOutGoingEmails.Add(item);
-				}
-			}
-
+			allIncomingEmails = OpenPopParser.getIncommingOrSentMessages("incomming");
+			allOutGoingEmails = OpenPopParser.getIncommingOrSentMessages("sent");
 		}
 
+		/// <summary>
+		/// When the label compose is clicked with the left mouse button, this method oppens a new window.
+		/// The window is set to be in the lower right corner of the mainwindow, 
+		/// this is determined by using the top and left position + mainwindow size, substracted by the compose window width and height
+		/// </summary>
 		private void lblCompose_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			ComposeEmailWindow cew = new ComposeEmailWindow();
@@ -166,37 +166,76 @@ namespace MailClient
 			cew.Top = (this.Top + this.Height) - cew.Height;
 		}
 
+		/// <summary>
+		/// Sets the datagrid to show all incoming mails and makes the enum reflect this
+		/// </summary>
 		private void lblInbox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			Mailview_DataGrid.ItemsSource = allIncomingEmails;
+			mailViewer.Visibility = Visibility.Hidden;
+			currentEmailsList = allIncomingEmails;
+			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.indbox;
 		}
 
+		/// <summary>
+		/// Sets the datagrid to show all outgoing mails and makes the enum reflect this
+		/// </summary>
 		private void lblSentMail_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			Mailview_DataGrid.ItemsSource = allOutGoingEmails;
+			mailViewer.Visibility = Visibility.Hidden;
+			currentEmailsList = allOutGoingEmails;
+			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.sentmail;
 		}
 
+		/// <summary>
+		/// Sets the datagrid to show all drafts and makes the enum reflect this
+		/// </summary>
 		private void lblDrafts_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			Mailview_DataGrid.ItemsSource = Drafts;
+			mailViewer.Visibility = Visibility.Hidden;
+			currentEmailsList = Drafts;
+			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.drafts;
 		}
 
+		/// <summary>
+		/// Sets the datagrid to show all spam mails and makes the enum reflect this
+		/// </summary>
 		private void lblSpam_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			Mailview_DataGrid.ItemsSource = Spam;
+			mailViewer.Visibility = Visibility.Hidden;
+			currentEmailsList = Spam;
+			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.spam;
 		}
 
+		/// <summary>
+		/// Sets the datagrid to show all trash and makes the enum reflect this
+		/// </summary>
 		private void lblTrash_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			Mailview_DataGrid.ItemsSource = Trash;
+			mailViewer.Visibility = Visibility.Hidden;
+			currentEmailsList = Trash;
+			Mailview_DataGrid.ItemsSource = currentEmailsList;
 			mailclientmenu = mailclientMenu.trash;
+		}
+
+		private void DataGridRow_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			var currentRowIndex = Mailview_DataGrid.Items.IndexOf(Mailview_DataGrid.CurrentItem);
+			string html = OpenPopParser.Body(currentRowIndex, currentEmailsList);
+			//Message message = (Message)Mailview_DataGrid.SelectedItem;
+			//string html = message.MessagePart.GetBodyAsText();
+			Mailview_DataGrid.Visibility = Visibility.Hidden;
+			mailViewer.Visibility = Visibility.Visible;
+			mailViewer.Navigate(html);
 		}
 	}
 
+	/// <summary>
+	/// Used by the datagrid to determine whether to show a imagefile indicating a attached file in the  mail
+	/// </summary>
 	public class IntToImageConverter : IValueConverter
 	{
 

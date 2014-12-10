@@ -30,19 +30,19 @@ namespace MailClient
                 Directory.CreateDirectory(xmlLocation);
             }
 
-            using (XmlWriter writer = XmlWriter.Create(xmlLocation + "AllMails.xml"))
-            {            
-                writer.WriteStartElement("RegExes");
-                foreach (var RegEx in RegExesList)
-                {
-                    writer.WriteStartElement("RegEx");
-                    writer.WriteElementString("Name", RegEx.Name);
-                    writer.WriteElementString("Expression", RegEx.Expression);
-                    writer.WriteEndElement();
-                }
-                writer.WriteEndElement();
-                writer.Flush();
-            }
+            //using (XmlWriter writer = XmlWriter.Create(xmlLocation + "AllMails.xml"))
+            //{            
+            //    writer.WriteStartElement("RegExes");
+            //    foreach (var RegEx in RegExesList)
+            //    {
+            //        writer.WriteStartElement("RegEx");
+            //        writer.WriteElementString("Name", RegEx.Name);
+            //        writer.WriteElementString("Expression", RegEx.Expression);
+            //        writer.WriteEndElement();
+            //    }
+            //    writer.WriteEndElement();
+            //    writer.Flush();
+            //}
    
         }
 
